@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-kwkhtmltopdf
+  namespace: odoo-dev
+  labels:
+    app: my-kwkhtmltopdf
+spec:
+  containers:
+    - name: my-kwkhtmltopdf
+      image: us-docker.pkg.dev/hpr-serv-prod-6445/hpr-docker/application/npe/kwkhtmltopdf:hpr-kwkhtmltopdf-bionic-0.12.5
+      ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-kwkhtmltopdf
+  namespace: odoo-dev
+spec:
+  selector:
+    app: my-kwkhtmltopdf
+  ports:
+    - protocol: TCP
+      port: 80 # The port the service exposes inside the cluster
+      targetPort: 8080 # The port on which the app container is listening
+      # nodePort: 31008  # Optional: specify a fixed NodePort (range 30000-32767)
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: my-kwkhtmltopdf
+  namespace: odoo-dev
+spec:
+  gateways:
+    - istio-system/npe-homeprotech-com
+    - mesh
+  hosts:
+    - my-kwkhtmltopdf.npe.homeprotech.com
+    - my-kwkhtmltopdf
+  http:
+    - match:
+        - uri:
+            prefix: /   # Route all requests
+      route:
+        - destination:
+            host: my-kwkhtmltopdf.odoo-dev.svc.cluster.local
+            port:
+              number: 80
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: my-kwkhtmltopdf
+  namespace: odoo-dev
+spec:
+  selector:
+    matchLabels:
+      app: my-kwkhtmltopdf
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            methods:
+              - '*'
+            ports:
+              - '8080'
+      when:
+        - key: source.namespace
+          values:
+            - istio-system
+            - odoo-dev
+
