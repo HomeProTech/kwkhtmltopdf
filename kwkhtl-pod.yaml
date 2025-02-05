@@ -1,16 +1,48 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: my-kwkhtmltopdf
   namespace: odoo-dev
   labels:
     app: my-kwkhtmltopdf
 spec:
-  containers:
-    - name: my-kwkhtmltopdf
-      image: us-docker.pkg.dev/hpr-serv-prod-6445/hpr-docker/application/npe/kwkhtmltopdf:hpr-kwkhtmltopdf-bionic-0.12.5
-      ports:
-        - containerPort: 8080
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-kwkhtmltopdf
+  template:
+    metadata:
+      labels:
+        app: my-kwkhtmltopdf
+    spec:
+      containers:
+        - name: my-kwkhtmltopdf
+          image: us-docker.pkg.dev/hpr-serv-prod-6445/hpr-docker/application/npe/kwkhtmltopdf:hpr-kwkhtmltopdf-bionic-0.12.5
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+      nodeSelector:
+        node_pool: hpr-k8s-npe-nodepool-central1
+---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: my-kwkhtmltopdf
+#   namespace: odoo-dev
+#   labels:
+#     app: my-kwkhtmltopdf
+# spec:
+#   containers:
+#     - name: my-kwkhtmltopdf
+#       image: us-docker.pkg.dev/hpr-serv-prod-6445/hpr-docker/application/npe/kwkhtmltopdf:hpr-kwkhtmltopdf-bionic-0.12.5
+#       ports:
+#         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -34,10 +66,10 @@ metadata:
   namespace: odoo-dev
 spec:
   gateways:
-    - istio-system/npe-homeprotech-com
+    - istio-system/gcp-homeprotech-com
     - mesh
   hosts:
-    - my-kwkhtmltopdf.npe.homeprotech.com
+    - my-kwkhtmltopdf-npe.gcp.homeprotech.com
     - my-kwkhtmltopdf
   http:
     - match:

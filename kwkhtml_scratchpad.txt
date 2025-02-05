@@ -1,0 +1,39 @@
+env KWKHTMLTOPDF_SERVER_URL=http://localhost:55634/ \
+  go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test3.pdf
+
+# env KWKHTMLTOPDF_SERVER_URL=http://100.98.0.237:8080/ \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+# env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf.npe.homeprotech.com \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+# env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf.npe.homeprotech.com:8080/ \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com /tmp/test4.pdf
+
+
+# env KWKHTMLTOPDF_SERVER_URL=http://100.101.147.57/ \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+# env KWKHTMLTOPDF_SERVER_URL=http://100.101.147.57:8080/ \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+# env KWKHTMLTOPDF_SERVER_URL=http://100.101.149.144/ \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+# env KWKHTMLTOPDF_SERVER_URL=https://172.21.0.17/ \
+#   go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf-npe.gcp.homeprotech.com/ \
+  go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test4.pdf
+
+env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf-npe.gcp.homeprotech.com/ \
+  ~/Downloads/kwkhtmltopdf_client https://pythonspeed.com test5.pdf
+
+env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf-npe.gcp.homeprotech.com/ \
+  wkhtmltopdf_client https://pythonspeed.com test6.pdf
+
+env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf-npe.gcp.homeprotech.com/ \
+  wkhtmltopdf_client https://pythonspeed.com test6.pdf
+
+env KWKHTMLTOPDF_SERVER_URL=https://my-kwkhtmltopdf-npe.gcp.homeprotech.com/ \
+  go run client/go/kwkhtmltopdf_client.go https://pythonspeed.com test7.pdf
